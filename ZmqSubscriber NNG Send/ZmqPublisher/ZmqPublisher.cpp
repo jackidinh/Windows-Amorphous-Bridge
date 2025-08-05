@@ -2,6 +2,8 @@
 #include <iostream>
 #include <nng.h>
 #include <nng/protocol/pubsub0/pub.h>
+#include "person.pb.h"
+#include <string>
 
 int main() {
     zmq::context_t context(1);
@@ -51,8 +53,15 @@ int main() {
             std::cout << "Forwarded message of size " << len << "\n";
         }
 
-        std::string message(static_cast<char*>(zmq_msg.data()), zmq_msg.size());
-        std::cout << "Received: " << message << std::endl;
+        std::string serialized(static_cast<char*>(zmq_msg.data()), zmq_msg.size());
+        Person received;
+
+        if (received.ParseFromString(serialized)) {
+            std::cout << "Received Person:\n";
+            std::cout << "Name: " << received.name() << "\n";
+            std::cout << "ID: " << received.id() << "\n";
+        }
     }
+    nng_close(sock);
     return 0;
 }
