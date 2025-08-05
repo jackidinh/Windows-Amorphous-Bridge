@@ -20,10 +20,11 @@
  */
 
 #include <iostream>
-#include <nng.h>
+#include <nng/nng.h>
 #include <nng/protocol/pubsub0/sub.h>
 #include <chrono>
 #include <string>
+#include "person.pb.h"
 
 #include "PersonPublisherApp.hpp"
 
@@ -185,9 +186,17 @@ void PersonPublisherApp::run()
             continue;
         }
 
+        std::string data(buf,sz);
+        nng_free(buf,sz);
+
+        std::cout<<"Data received from NNG: "<<data<<"\n";
+
+        Person person;
+        person.ParseFromString(data);
+
         test_msgs_pkg::msg::Person st;
-        st.name() = "Olivia";
-        st.id() = 1;
+        st.name() = person.name();
+        st.id() = person.id();
 
         writer_->write(&st);
         std::cout<<"Published to ROS\n";
