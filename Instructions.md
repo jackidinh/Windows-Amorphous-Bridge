@@ -48,31 +48,7 @@ ZmqPublisher (proto system):
   
   - Receive proto buffer through thread from previous app
 
-ZmqSubscriber NNG Send (ZMQ->NNG & NNG->ZMQ bridge):
-
-- Main Program:
-  
-  - Start ZMQ context
-  
-  - Open subscriber socket
-  
-  - Open NNG publisher socket
-  
-  - Wait for ZMQ message
-  
-  - Send through NNG
-
-- Thread:
-  
-  - Pass ZMQ context
-  
-  - Open publisher socket
-  
-  - open NNG subscriber socket
-  
-  - Wait for NNG message
-  
-  - Send message through ZMQ
+- Run using sln
 
 ZmqSubscriber NNG Send (ZMQ->NNG & NNG->ZMQ bridge):
 
@@ -99,6 +75,36 @@ ZmqSubscriber NNG Send (ZMQ->NNG & NNG->ZMQ bridge):
   - Wait for NNG message
   
   - Send message through ZMQ
+
+- Run using sln
+
+ZmqSubscriber NNG Send (ZMQ->NNG & NNG->ZMQ bridge):
+
+- Main Program:
+  
+  - Start ZMQ context
+  
+  - Open subscriber socket
+  
+  - Open NNG publisher socket
+  
+  - Wait for ZMQ message
+  
+  - Send through NNG
+
+- Thread:
+  
+  - Pass ZMQ context
+  
+  - Open publisher socket
+  
+  - open NNG subscriber socket
+  
+  - Wait for NNG message
+  
+  - Send message through ZMQ
+
+- Run using sln
 
 testwork (NNG->DDS & DDS->NNG bridge):
 
@@ -111,6 +117,8 @@ testwork (NNG->DDS & DDS->NNG bridge):
   - Must use different topic name so that data doesnt clash if receiving and sending at the same time.
   
   - can use threads in main ( havent implemented)
+
+- Build using cmake .. and cmake --build .  in build folder, then run executable Person.exe in Debug directory
 
 ros  (ROS2 system):
 
