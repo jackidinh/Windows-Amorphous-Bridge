@@ -2,8 +2,67 @@
 #include <iostream>
 #include <nng.h>
 #include <nng/protocol/pubsub0/pub.h>
+#include <nng/protocol/pubsub0/sub.h>
 #include "person.pb.h"
 #include <string>
+#include <thread>
+
+void publisher_thread(zmq::context_t& context) {
+    zmq::socket_t publisher(context, zmq::socket_type::pub);
+    publisher.bind("tcp://*:5560");
+
+
+    nng_socket sock;
+    int rv;
+
+    if ((rv = nng_sub0_open(&sock)) != 0) {
+        std::cout << "Failed to open sub socket\n";
+        return;
+    }
+
+    if ((rv = nng_setopt(sock, NNG_OPT_SUB_SUBSCRIBE, "", 0)) != 0) {
+        std::cout << "Failed to set subscriber option\n";
+        nng_close(sock);
+        return;
+    }
+    
+    if ((rv = nng_dial(sock, "tcp://127.0.0.1:5561",NULL,0)) != 0) {
+        std::cout << "Failed to connect to publisher\n";
+        nng_close(sock);
+        return;
+    }
+
+    std::cout << "Connected to publisher. Waiting for messages...\n";
+
+    while (true) {
+        nng_msg* msg = nullptr;
+
+        rv = nng_recvmsg(sock, &msg, 0);
+        if (rv != 0) {
+            std::cout << "NNG receive failed.\n";
+            continue;
+        }
+        std::cout << "RECEIVED from NNG inside of thread!\n";
+        size_t len = nng_msg_len(msg);
+        void* data = nng_msg_body(msg);
+
+        zmq::message_t zmq_msg(len);
+        memcpy(zmq_msg.data(), data, len);
+
+        try {
+            publisher.send(zmq_msg, zmq::send_flags::none);
+            std::cout << "Sent through ZMQ inside of thread!\n";
+        }
+        catch (const zmq::error_t& e) {
+            std::cout << "ZMQ send error\n";
+        }
+        nng_msg_free(msg);
+    }
+    nng_close(sock);
+
+
+
+}
 
 int main() {
     zmq::context_t context(1);
@@ -11,6 +70,8 @@ int main() {
 
     subscriber.connect("tcp://localhost:5555");
     subscriber.set(zmq::sockopt::subscribe, "");  // Subscribe to all messages
+
+    std::thread pub_thread(publisher_thread, std::ref(context));
 
     nng_socket sock;
     int rv;
@@ -28,6 +89,7 @@ int main() {
 
     std::cout << "Bridging ZMQ->NNG (ZMQ sub to NNG pub) running...\n";
 
+    
     while (true) {
         zmq::message_t zmq_msg;
         subscriber.recv(zmq_msg, zmq::recv_flags::none);

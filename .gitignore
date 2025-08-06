@@ -1,11 +1,16 @@
-# Ignore build directory and generated build files
+# Ignore build directories
 build/
+Debug/
+Release/
+x64/
+
+# Ignore CMake files
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
 Makefile
 
-# Ignore executables and object files
+# Ignore compiled binaries and object files
 *.exe
 *.dll
 *.lib
@@ -15,11 +20,14 @@ Makefile
 *.obj
 *.pdb
 
-# Ignore Visual Studio project files (if you use VS)
-*.vcxproj*
-*.sln
+# Ignore Visual Studio user files and workspace
+*.user
+*.suo
 .vs/
 
+# DO NOT ignore these — keep .sln and .vcxproj so others can build
+# *.vcxproj*
+# *.sln
 
 # Ignore ROS2 build artifacts (if any)
 install/

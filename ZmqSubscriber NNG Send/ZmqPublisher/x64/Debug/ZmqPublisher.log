@@ -216,6 +216,7 @@ C:\vcpkg\installed\x64-windows\include\google\protobuf\message.h(1076,27): warni
       C:\vcpkg\installed\x64-windows\include\absl\base\call_once.h(89,7):
       see declaration of 'absl::lts_20250127::once_flag'
   
+C:\jackiWork\ZmqSubscriber NNG Send\ZmqPublisher\ZmqPublisher.cpp(56,36): warning C4101: 'e': unreferenced local variable
   ZmqPublisher.vcxproj -> C:\jackiWork\ZmqSubscriber NNG Send\x64\Debug\ZmqPublisher.exe
   'pwsh.exe' is not recognized as an internal or external command,
   operable program or batch file.

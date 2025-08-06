@@ -45,7 +45,7 @@
 using namespace eprosima::fastdds::dds;
 
 PersonPublisherApp::PersonPublisherApp(
-        const int& domain_id)
+    const int& domain_id)
     : factory_(nullptr)
     , participant_(nullptr)
     , publisher_(nullptr)
@@ -115,8 +115,8 @@ PersonPublisherApp::~PersonPublisherApp()
 }
 
 void PersonPublisherApp::on_publication_matched(
-        DataWriter* /*writer*/,
-        const PublicationMatchedStatus& info)
+    DataWriter* /*writer*/,
+    const PublicationMatchedStatus& info)
 {
     if (info.current_count_change == 1)
     {
@@ -138,13 +138,13 @@ void PersonPublisherApp::on_publication_matched(
     else
     {
         std::cout << info.current_count_change
-                  << " is not a valid value for PublicationMatchedStatus current count change" << std::endl;
+            << " is not a valid value for PublicationMatchedStatus current count change" << std::endl;
     }
 }
 
 void PersonPublisherApp::run()
 {
-    std::cout<<"Waiting to Connect to NNG Publisher\n";
+    std::cout << "Waiting to Connect to NNG Publisher\n";
     nng_socket sock;
     int rv;
 
@@ -181,25 +181,31 @@ void PersonPublisherApp::run()
         char* buf = nullptr;
         size_t sz;
 
-        if ((rv=nng_recv(sock,&buf,&sz,NNG_FLAG_ALLOC))!=0){
-            std::cout<<"NNG RECEIVE FAILED\n";
+        if ((rv = nng_recv(sock, &buf, &sz, NNG_FLAG_ALLOC)) != 0) {
+            std::cout << "NNG RECEIVE FAILED\n";
             continue;
         }
 
-        std::string data(buf,sz);
-        nng_free(buf,sz);
+        std::string data(buf, sz);
+        nng_free(buf, sz);
+        std::cout << "Raw bytes from NNG:\n";
+        for (char c : data) {
+            std::cout << std::hex << (int)(unsigned char)c << " ";
+        }
+        std::cout << "\n";
 
-        std::cout<<"Data received from NNG: "<<data<<"\n";
-
+        std::cout << "Data received from NNG: "<< "\n";
         Person person;
         person.ParseFromString(data);
 
         test_msgs_pkg::msg::Person st;
-        st.name() = person.name();
+        st.name()="hi";
         st.id() = person.id();
 
+        std::cout << "Publishing to ROS:\n";
+        std::cout << "Name: " << person.name() << "\n";
         writer_->write(&st);
-        std::cout<<"Published to ROS\n";
+        std::cout << "Published to ROS\n";
     }
     nng_close(sock);
 }
