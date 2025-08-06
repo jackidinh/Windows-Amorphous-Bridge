@@ -24,6 +24,9 @@
 
 #include <condition_variable>
 
+#include <nng/nng.h>
+#include <nng/protocol/pubsub0/pub.h>
+
 #include <fastdds/dds/domain/DomainParticipant.hpp>
 #include <fastdds/dds/domain/DomainParticipantFactory.hpp>
 #include <fastdds/dds/subscriber/DataReaderListener.hpp>
@@ -72,6 +75,8 @@ private:
     std::atomic<bool> stop_;
     mutable std::mutex terminate_cv_mtx_;
     std::condition_variable terminate_cv_;
+
+    nng_socket nng_pub_socket;
 };
 
 #endif // FAST_DDS_GENERATED__TEST_MSGS_PKG_MSG_PERSONSUBSCRIBERAPP_HPP

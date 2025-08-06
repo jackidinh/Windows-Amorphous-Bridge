@@ -26,11 +26,11 @@ void publisher_thread(zmq::context_t& context) {
         return;
     }
     
-    if ((rv = nng_dial(sock, "tcp://127.0.0.1:5561",NULL,0)) != 0) {
-        std::cout << "Failed to connect to publisher\n";
-        nng_close(sock);
-        return;
+    while ((rv = nng_dial(sock, "tcp://127.0.0.1:5561", NULL, 0)) != 0) {
+        std::cout << "Failed to connect to publisher, retrying...\n";
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
+
 
     std::cout << "Connected to publisher. Waiting for messages...\n";
 

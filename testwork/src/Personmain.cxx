@@ -59,52 +59,44 @@ std::string parse_signal(
     }
 }
 
-int main(
-        int argc,
-        char** argv)
+int main(int argc, char** argv)
 {
     auto ret = EXIT_SUCCESS;
     int domain_id = 0;
-    std::shared_ptr<PersonApplication> app;
 
-    if (argc != 2 || (strcmp(argv[1], "publisher") != 0 && strcmp(argv[1], "subscriber") != 0))
+    try
     {
-        std::cout << "Error: Incorrect arguments." << std::endl;
-        std::cout << "Usage: " << std::endl << std::endl;
-        std::cout << argv[0] << " publisher|subscriber" << std::endl << std::endl;
-        ret = EXIT_FAILURE;
-    }
-    else
-    {
-        try
-        {
-            app = PersonApplication::make_app(domain_id, argv[1]);
-        }
-        catch (const std::runtime_error& e)
-        {
-            EPROSIMA_LOG_ERROR(app_name, e.what());
-            ret = EXIT_FAILURE;
-        }
+        // Create both apps
+        auto publisher = PersonApplication::make_app(domain_id, "publisher");
+        auto subscriber = PersonApplication::make_app(domain_id, "subscriber");
 
-        std::thread thread(&PersonApplication::run, app);
+        // Run both in their own threads
+        std::thread pub_thread(&PersonApplication::run, publisher);
+        std::thread sub_thread(&PersonApplication::run, subscriber);
 
-        std::cout << argv[1] << " running. Please press Ctrl+C to stop the " << argv[1] << " at any time." << std::endl;
+        std::cout << "Publisher and Subscriber running. Press Ctrl+C to stop." << std::endl;
 
         stop_handler = [&](int signum)
-                {
-                    std::cout << "\n" << parse_signal(signum) << " received, stopping " << argv[1]
-                              << " execution." << std::endl;
-                    app->stop();
-                };
+        {
+            std::cout << "\n" << parse_signal(signum) << " received, stopping execution." << std::endl;
+            publisher->stop();
+            subscriber->stop();
+        };
 
         signal(SIGINT, signal_handler);
         signal(SIGTERM, signal_handler);
 #ifndef _WIN32
         signal(SIGQUIT, signal_handler);
         signal(SIGHUP, signal_handler);
-#endif // _WIN32
+#endif
 
-        thread.join();
+        pub_thread.join();
+        sub_thread.join();
+    }
+    catch (const std::runtime_error& e)
+    {
+        EPROSIMA_LOG_ERROR(app_name, e.what());
+        ret = EXIT_FAILURE;
     }
 
     Log::Reset();
