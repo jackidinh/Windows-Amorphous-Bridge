@@ -6,6 +6,8 @@
 #include "person.pb.h"
 #include <string>
 #include <thread>
+#include <flatbuffers/flatbuffers.h>
+#include "person_generated.h"
 
 void publisher_thread(zmq::context_t& context) {
     zmq::socket_t publisher(context, zmq::socket_type::pub);
@@ -46,11 +48,24 @@ void publisher_thread(zmq::context_t& context) {
         size_t len = nng_msg_len(msg);
         void* data = nng_msg_body(msg);
 
-        zmq::message_t zmq_msg(len);
-        memcpy(zmq_msg.data(), data, len);
+        //convert data to proto
+        auto person = example::GetPerson(data);
+        auto name = person->name();
+        auto id = person->id();
+
+        Person zmqPerson;
+        zmqPerson.set_name(name->str());
+        zmqPerson.set_id(id);
+        std::string serialized;
+        zmqPerson.SerializeToString(&serialized);
+
+
+        std::cout << "Received flatbuffer in thread values:\n";
+        std::cout << "Name: " << name->str() << "\n";
+        std::cout << "ID: " << id << "\n";
 
         try {
-            publisher.send(zmq_msg, zmq::send_flags::none);
+            publisher.send(zmq::buffer(serialized), zmq::send_flags::none);
             std::cout << "Sent through ZMQ inside of thread!\n";
         }
         catch (const zmq::error_t& e) {
@@ -94,26 +109,6 @@ int main() {
         zmq::message_t zmq_msg;
         subscriber.recv(zmq_msg, zmq::recv_flags::none);
 
-        const void* data = zmq_msg.data();
-        size_t len = zmq_msg.size();
-
-        nng_msg* nng_msg = nullptr;
-        rv = nng_msg_alloc(&nng_msg, len);
-        if (rv != 0) {
-            std::cout << "NNG msg alloc failed." << "\n";
-            continue;
-        }
-
-        memcpy(nng_msg_body(nng_msg), data, len);
-
-        rv = nng_sendmsg(sock, nng_msg, 0);
-        if (rv != 0) {
-            std::cout << "NNG send failed. " << "\n";
-            nng_msg_free(nng_msg); // safe to free on failure
-        }
-        else {
-            std::cout << "Forwarded message of size " << len << "\n";
-        }
 
         std::string serialized(static_cast<char*>(zmq_msg.data()), zmq_msg.size());
         Person received;
@@ -123,6 +118,35 @@ int main() {
             std::cout << "Name: " << received.name() << "\n";
             std::cout << "ID: " << received.id() << "\n";
         }
+        //temporary hard coded conversion, include converter here
+        flatbuffers::FlatBufferBuilder builder(1024);
+        auto person_name = builder.CreateString(received.name());
+        flatbuffers::Offset<example::Person> person = example::CreatePerson(builder, person_name, received.id());
+        builder.Finish(person);
+
+        uint8_t* buff = builder.GetBufferPointer();
+        int sizee = builder.GetSize();
+
+
+        nng_msg* nng_msg = nullptr;
+        rv = nng_msg_alloc(&nng_msg, sizee);
+        if (rv != 0) {
+            std::cout << "NNG msg alloc failed." << "\n";
+            continue;
+        }
+
+        memcpy(nng_msg_body(nng_msg), buff, sizee);
+
+        rv = nng_sendmsg(sock, nng_msg, 0);
+        if (rv != 0) {
+            std::cout << "NNG send failed. " << "\n";
+            nng_msg_free(nng_msg); // safe to free on failure
+        }
+        else {
+            std::cout << "Forwarded message of size " << sizee << "\n";
+        }
+
+
     }
     nng_close(sock);
     return 0;

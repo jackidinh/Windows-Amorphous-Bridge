@@ -144,6 +144,7 @@ void PersonPublisherApp::on_publication_matched(
 
 void PersonPublisherApp::run()
 {
+    GOOGLE_PROTOBUF_VERIFY_VERSION;
     std::cout << "Waiting to Connect to NNG Publisher\n";
     nng_socket sock;
     int rv;
@@ -196,10 +197,12 @@ void PersonPublisherApp::run()
 
         std::cout << "Data received from NNG: "<< "\n";
         Person person;
-        person.ParseFromString(data);
+        bool parsed = person.ParseFromString(data);
+        std::cout << "Parse success: " << parsed << std::endl;
+      
 
         test_msgs_pkg::msg::Person st;
-        st.name()="hi";
+        st.name()="Olivia";  //Cannot parse name from received protobuffer
         st.id() = person.id();
 
         std::cout << "Publishing to ROS:\n";

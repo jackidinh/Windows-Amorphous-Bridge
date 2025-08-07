@@ -33,6 +33,7 @@ void subscriber_thread(zmq::context_t& context) {
 }
 
 int main() {
+    GOOGLE_PROTOBUF_VERIFY_VERSION;
     zmq::context_t context(1);
     zmq::socket_t publisher(context, zmq::socket_type::pub);
 
@@ -46,6 +47,12 @@ int main() {
 
     std::string serialized;
     olivia.SerializeToString(&serialized);
+
+    std::cout << "Here is the serialized data:\n";
+    for (char c : serialized) {
+        std::cout << std::hex << (int)(unsigned char)c << " ";
+    }
+    std::cout << "\n";
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 

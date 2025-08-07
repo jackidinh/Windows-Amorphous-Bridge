@@ -151,15 +151,27 @@ void PersonSubscriberApp::on_data_available(
     {
         if ((info.instance_state == ALIVE_INSTANCE_STATE) && info.valid_data)
         {
-            std::cout << "Sample RECEIVED" << std::endl;
+            std::cout << "Sample RECEIVED\n" << std::endl;
+            std::cout << "Name: " << sample_.name()<<"\n";
+            std::cout << "Name: " << sample_.id() << "\n";
 
             Person proto_msg;
             //proto_msg.set_name(sample_.name().c_str());
-            proto_msg.set_name("Jackie");
+            proto_msg.set_name(sample_.name());
             proto_msg.set_id(sample_.id());
+
+            std::cout << "Here is the new NNG Proto:\n";
+            std::cout << "Name: " << proto_msg.name()<<"\n";
+            std::cout << "ID: " << proto_msg.id() << "\n";
 
             std::string serialized;
             proto_msg.SerializeToString(&serialized);
+
+            std::cout << "Raw bytes from Serialized Proto:\n";
+            for (char c : serialized) {
+                std::cout << std::hex << (int)(unsigned char)c << " ";
+            }
+            std::cout << "\n";
 
             nng_msg* msg;
             int rv = nng_msg_alloc(&msg,serialized.size());
