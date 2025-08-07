@@ -14,7 +14,7 @@ Files needed:
 
 - Custom ROS2 .msg
 
-- Generated ROS2 .idl from .msg
+- Generated ROS2 .idl from .msg ( fastddsgen -typeros2 -no-typeobjectsupport example.idl)
 
 - Generated fastddsgen code from ros2 .idl using -typeros2 and -no-typeobjectsupport flags
 
@@ -62,7 +62,9 @@ ZmqSubscriber NNG Send (ZMQ->NNG & NNG->ZMQ bridge):
   
   - Wait for ZMQ message
   
-  - Send through NNG
+  - TODO: implement proto to flatbuffer converter
+  
+  - send flat buffer
 
 - Thread:
   
@@ -73,6 +75,8 @@ ZmqSubscriber NNG Send (ZMQ->NNG & NNG->ZMQ bridge):
   - open NNG subscriber socket
   
   - Wait for NNG message
+  
+  - TODO: implement flatbuffer to proto converter
   
   - Send message through ZMQ
 
@@ -90,6 +94,8 @@ ZmqSubscriber NNG Send (ZMQ->NNG & NNG->ZMQ bridge):
   
   - Wait for ZMQ message
   
+  - TODO: implement flatbuffer to dds converter
+  
   - Send through NNG
 
 - Thread:
@@ -101,6 +107,8 @@ ZmqSubscriber NNG Send (ZMQ->NNG & NNG->ZMQ bridge):
   - open NNG subscriber socket
   
   - Wait for NNG message
+  
+  - TODO: implement dds to flatbuffer converter
   
   - Send message through ZMQ
 
