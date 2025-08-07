@@ -82,49 +82,20 @@ ZmqSubscriber NNG Send (ZMQ->NNG & NNG->ZMQ bridge):
 
 - Run using sln
 
-ZmqSubscriber NNG Send (ZMQ->NNG & NNG->ZMQ bridge):
-
-- Main Program:
-  
-  - Start ZMQ context
-  
-  - Open subscriber socket
-  
-  - Open NNG publisher socket
-  
-  - Wait for ZMQ message
-  
-  - TODO: implement flatbuffer to dds converter
-  
-  - Send through NNG
-
-- Thread:
-  
-  - Pass ZMQ context
-  
-  - Open publisher socket
-  
-  - open NNG subscriber socket
-  
-  - Wait for NNG message
-  
-  - TODO: implement dds to flatbuffer converter
-  
-  - Send message through ZMQ
-
-- Run using sln
-
 testwork (NNG->DDS & DDS->NNG bridge):
 
 - Publish Program:
   
   - In order for ROS2 to see FastDDS topic and type, must use ROS2 compatible topic name and types ie. rt/person_topic and test_msgs_pkg::msg::dds_::Person_
+  - TODO: implement flat buffer to dds converter
 
 - Subscribe Program:
   
   - Must use different topic name so that data doesnt clash if receiving and sending at the same time.
   
-  - can use threads in main ( havent implemented)
+  - TODO: implement dds to flatbuffer converter
+  
+  - 
 
 - Build using cmake .. and cmake --build .  in build folder, then run executable Person.exe in Debug directory
 
