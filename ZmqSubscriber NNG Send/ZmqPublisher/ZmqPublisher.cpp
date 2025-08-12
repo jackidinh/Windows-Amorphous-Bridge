@@ -7,9 +7,7 @@
 #include <string>
 #include <thread>
 #include <flatbuffers/flatbuffers.h>
-//#include "person_generated.h"
-#include "example_Generated_PBtoFB.h"
-
+#include "person_generated.h"
 
 void publisher_thread(zmq::context_t& context) {
     zmq::socket_t publisher(context, zmq::socket_type::pub);
@@ -51,17 +49,23 @@ void publisher_thread(zmq::context_t& context) {
         void* data = nng_msg_body(msg);
 
         //convert data to proto
-        example_Person_table_t x = example_Person_as_root(data);
-        example::Person converted_pb_person;
-        example::CreatePBFromPerson(x, converted_pb_person);
-        std::string converted_pb_serialized;
-        if (!converted_pb_person.SerializeToString(&converted_pb_serialized)) {
-            return;
-        }
+        auto person = example::GetPerson(data);
+        auto name = person->name();
+        auto id = person->id();
 
+        Person zmqPerson;
+        zmqPerson.set_name(name->str());
+        zmqPerson.set_id(id);
+        std::string serialized;
+        zmqPerson.SerializeToString(&serialized);
+
+
+        std::cout << "Received flatbuffer in thread values:\n";
+        std::cout << "Name: " << name->str() << "\n";
+        std::cout << "ID: " << id << "\n";
 
         try {
-            publisher.send(zmq::buffer(converted_pb_serialized), zmq::send_flags::none);
+            publisher.send(zmq::buffer(serialized), zmq::send_flags::none);
             std::cout << "Sent through ZMQ inside of thread!\n";
         }
         catch (const zmq::error_t& e) {
@@ -107,7 +111,7 @@ int main() {
 
 
         std::string serialized(static_cast<char*>(zmq_msg.data()), zmq_msg.size());
-        example::Person received;
+        Person received;
 
         if (received.ParseFromString(serialized)) {
             std::cout << "Received Person:\n";
@@ -115,16 +119,13 @@ int main() {
             std::cout << "ID: " << received.id() << "\n";
         }
         //temporary hard coded conversion, include converter here
+        flatbuffers::FlatBufferBuilder builder(1024);
+        auto person_name = builder.CreateString(received.name());
+        flatbuffers::Offset<example::Person> person = example::CreatePerson(builder, person_name, received.id());
+        builder.Finish(person);
 
-        flatcc_builder_t builder2, * B2;
-        flatcc_builder_init(&builder2);
-        B2 = &builder2;
-        example_Person_start_as_root(B2);
-        example::CreatePersonFromPB(B2, received);
-        example_Person_end_as_root(B2);
-        size_t sizee;
-        void* converted_fb_buf = flatcc_builder_finalize_aligned_buffer(B2, &sizee);
-        flatcc_builder_clear(&builder2);
+        uint8_t* buff = builder.GetBufferPointer();
+        int sizee = builder.GetSize();
 
 
         nng_msg* nng_msg = nullptr;
@@ -134,7 +135,7 @@ int main() {
             continue;
         }
 
-        memcpy(nng_msg_body(nng_msg), converted_fb_buf, sizee);
+        memcpy(nng_msg_body(nng_msg), buff, sizee);
 
         rv = nng_sendmsg(sock, nng_msg, 0);
         if (rv != 0) {

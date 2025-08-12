@@ -21,13 +21,5 @@
     <ClCompile Include="person.pb.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="example.pb.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="example.ph.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
