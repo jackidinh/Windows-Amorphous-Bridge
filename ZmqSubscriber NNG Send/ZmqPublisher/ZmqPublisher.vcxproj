@@ -104,13 +104,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\vcpkg\installed\x64-windows\include\nng;C:\libzmq\include;C:\jackiWork\ZmqPublisher\ZmqPublisher;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\jackiWork\ZmqSubscriber NNG Send\ZmqPublisher;C:\jackiWork\ZmqSubscriber NNG Send\ZmqPublisher\flatcc\flatcc\include;C:\vcpkg\installed\x64-windows\include\nng;C:\libzmq\include;C:\jackiWork\ZmqPublisher\ZmqPublisher;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\libzmq\build\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ws2_32.lib;libzmq-v143-mt-4_3_6.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\libzmq\build\lib\Release;C:\jackiWork\ZmqSubscriber NNG Send\ZmqPublisher\flatcc\flatcc\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ws2_32.lib;libzmq-v143-mt-4_3_6.lib;flatcc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -130,8 +130,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="example.pb.cc" />
     <ClCompile Include="person.pb.cc" />
     <ClCompile Include="ZmqPublisher.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="example.ph.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
