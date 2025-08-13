@@ -53,7 +53,7 @@
 
 namespace test_msgs_pkg {
 
-namespace msg {
+namespace msg{
 
 /*!
  * @brief This class represents the structure Person defined by the user in the IDL file.

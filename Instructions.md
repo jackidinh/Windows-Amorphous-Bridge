@@ -106,3 +106,70 @@ ros  (ROS2 system):
 - set up simple publisher in future for flow in opposite direction
 
 ---
+
+Compiler Auto Gen Instructions (After Getting Schemas)
+
+- Use equivalent .proto to run through Protoc-c
+
+- Use equivalent .fbs to run through flatcc
+
+- Use equivalent .idl from ROS2 and run through fastddsgen -typeros2 -no-typeobjectsupport
+
+```flowchart
+st=>operation: App 1: Proto System
+
+app1=>operation: App 2: ZMQ to NNG Bridge
+app2=>operation: App 3: NNG to FastDDS Bridge
+app3=>operation: App 4: ROS2 System
+
+st->app1
+app1->app2
+app2->app3
+
+
+
+
+
+```
+
+
+
+NNG to FastDDS vs project include directives:
+Include directories:
+
+- C:\jackiWork\ZmqSubscriber NNG Send\ZmqPublisher\flatcc\flatcc\include
+
+- C:\jackiWork\testwork\src
+
+- C:\vcpkg\installed\x64-windows\include
+
+- C:\nng\include
+
+Linker General Libaries:
+
+- C:\jackiWork\ZmqSubscriber NNG Send\ZmqPublisher\flatcc\flatcc\lib\Release
+
+Linker input libraries:
+C:\Program Files\eProsima\fastdds 3.2.2\lib\x64Win64VS2019\libfastcdrd-2.3.lib
+C:\Program Files\eProsima\fastdds 3.2.2\lib\x64Win64VS2019\libfastddsd-3.2.lib
+Debug\Person_lib.lib
+C:\vcpkg\installed\x64-windows\lib\libprotobuf.lib
+C:\nng\build\Release\nng.lib
+C:\Program Files\eProsima\fastdds 3.2.2\lib\x64Win64VS2019\foonathan_memory-0.7.3-dbg.lib
+C:\Program Files\OpenSSL-Win64\lib\VC\x64\MDd\libssl_static.lib
+C:\Program Files\OpenSSL-Win64\lib\VC\x64\MDd\libcrypto_static.lib
+ws2_32.lib
+crypt32.lib
+iphlpapi.lib
+Shlwapi.lib
+kernel32.lib
+user32.lib
+gdi32.lib
+winspool.lib
+shell32.lib
+ole32.lib
+oleaut32.lib
+uuid.lib
+comdlg32.lib
+advapi32.lib
+flatcc.lib

@@ -24,9 +24,9 @@
 #include <nng/protocol/pubsub0/pub.h>
 #include <chrono>
 #include <string>
-#include "person.pb.h"
 #include <flatbuffers/flatbuffers.h>
-#include "person_generated.h"
+//#include "person_generated.h"
+#include "example_Generated_FastDDStoFB.h"
 
 #include "PersonSubscriberApp.hpp"
 
@@ -159,13 +159,23 @@ void PersonSubscriberApp::on_data_available(
 
             
             //Convert from dds to flatbuffer
-            flatbuffers::FlatBufferBuilder builder(1024);
+            /*flatbuffers::FlatBufferBuilder builder(1024);
             auto person_name = builder.CreateString(sample_.name());
             flatbuffers::Offset<example::Person> person = example::CreatePerson(builder, person_name, sample_.id());
             builder.Finish(person);
             
             uint8_t* buff = builder.GetBufferPointer();
-            int sizee = builder.GetSize();
+            int sizee = builder.GetSize();*/
+
+            flatcc_builder_t builder2, * B2;
+            flatcc_builder_init(&builder2);
+            B2 = &builder2;
+            example_Person_start_as_root(B2);
+            CreatePersonFromFastDDS(B2, sample_);
+            example_Person_end_as_root(B2);
+
+            size_t sizee;
+            void* convertedFbBuffer = flatcc_builder_finalize_aligned_buffer(B2, &sizee);
 
             nng_msg* nng_msg = nullptr;
             int rv = nng_msg_alloc(&nng_msg, sizee);
@@ -174,7 +184,7 @@ void PersonSubscriberApp::on_data_available(
                 continue;
             }
 
-            memcpy(nng_msg_body(nng_msg), buff, sizee);
+            memcpy(nng_msg_body(nng_msg), convertedFbBuffer, sizee);
 
             rv = nng_sendmsg(nng_pub_socket, nng_msg, 0);
             if (rv != 0) {

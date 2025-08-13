@@ -24,9 +24,10 @@
 #include <nng/protocol/pubsub0/sub.h>
 #include <chrono>
 #include <string>
-#include "person.pb.h"
 #include <flatbuffers/flatbuffers.h>
-#include "person_generated.h"
+//#include "person_generated.h"
+#include "example_Generated_FastDDStoFB.h"
+
 
 #include "PersonPublisherApp.hpp"
 
@@ -191,23 +192,17 @@ void PersonPublisherApp::run()
         std::cout << "RECEIVED flat buffer from NNG! \n";
         size_t len = nng_msg_len(buf);
         void* data = nng_msg_body(buf);
-
-        //convert data to dds
-        auto person = example::GetPerson(data);
-        auto name = person->name();
-        auto id = person->id();
-
         
-      
 
-        test_msgs_pkg::msg::Person st;
-        st.name()=name->str();  //Cannot parse name from received protobuffer
-        st.id() = id;
+        example_Person_table_t exampleRead = example_Person_as_root(data);
+        test_msgs_pkg::msg::Person convertedFbPerson;
+        CreateFastDDSFromPerson(exampleRead, convertedFbPerson);
+
 
         std::cout << "Publishing to ROS:\n";
-        std::cout << "Name: " << st.name() << "\n";
-        std::cout << "ID: " << st.id() << "\n";
-        writer_->write(&st);
+        std::cout << "Name: " << convertedFbPerson.name() << "\n";
+        std::cout << "ID: " << convertedFbPerson.id() << "\n";
+        writer_->write(&convertedFbPerson);
         std::cout << "Published to ROS\n";
     }
     nng_close(sock);
