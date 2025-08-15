@@ -26,7 +26,7 @@
 #include <string>
 #include <flatbuffers/flatbuffers.h>
 //#include "person_generated.h"
-#include "example_Generated_FastDDStoFB.h"
+#include "AreaSearchStatus_Generated_FastDDStoFB.h"
 
 #include "PersonSubscriberApp.hpp"
 
@@ -43,7 +43,8 @@
 #include <fastdds/dds/subscriber/SampleInfo.hpp>
 #include <fastdds/dds/subscriber/Subscriber.hpp>
 
-#include "PersonPubSubTypes.hpp"
+
+#include "AreaSearchStatusPubSubTypes.hpp"
 
 using namespace eprosima::fastdds::dds;
 
@@ -54,7 +55,7 @@ PersonSubscriberApp::PersonSubscriberApp(
     , subscriber_(nullptr)
     , topic_(nullptr)
     , reader_(nullptr)
-    , type_(new test_msgs_pkg::msg::PersonPubSubType())
+    , type_(new test_msgs_pkg::msg::AreaSearchStatusPubSubType())
     , samples_received_(0)
     , stop_(false)
 {
@@ -147,15 +148,15 @@ void PersonSubscriberApp::on_subscription_matched(
 void PersonSubscriberApp::on_data_available(
         DataReader* reader)
 {
-    test_msgs_pkg::msg::Person sample_;
+    test_msgs_pkg::msg::AreaSearchStatus sample_;
     SampleInfo info;
     while ((!is_stopped()) && (RETCODE_OK == reader->take_next_sample(&sample_, &info)))
     {
         if ((info.instance_state == ALIVE_INSTANCE_STATE) && info.valid_data)
         {
             std::cout << "Sample RECEIVED\n" << std::endl;
-            std::cout << "Name: " << sample_.name()<<"\n";
-            std::cout << "Name: " << sample_.id() << "\n";
+           // std::cout << "Name: " << sample_.name()<<"\n";
+            //std::cout << "Name: " << sample_.id() << "\n";
 
             
             //Convert from dds to flatbuffer
@@ -170,9 +171,9 @@ void PersonSubscriberApp::on_data_available(
             flatcc_builder_t builder2, * B2;
             flatcc_builder_init(&builder2);
             B2 = &builder2;
-            example_Person_start_as_root(B2);
-            CreatePersonFromFastDDS(B2, sample_);
-            example_Person_end_as_root(B2);
+            AreaSearchStatus_AreaSearchStatus_start_as_root(B2);
+            CreateAreaSearchStatusFromFastDDS(B2, sample_);
+            AreaSearchStatus_AreaSearchStatus_end_as_root(B2);
 
             size_t sizee;
             void* convertedFbBuffer = flatcc_builder_finalize_aligned_buffer(B2, &sizee);

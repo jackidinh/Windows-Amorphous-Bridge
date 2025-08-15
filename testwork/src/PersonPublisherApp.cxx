@@ -26,7 +26,7 @@
 #include <string>
 #include <flatbuffers/flatbuffers.h>
 //#include "person_generated.h"
-#include "example_Generated_FastDDStoFB.h"
+#include "AreaSearchStatus_Generated_FastDDStoFB.h"
 
 
 #include "PersonPublisherApp.hpp"
@@ -43,7 +43,7 @@
 #include <fastdds/dds/publisher/qos/DataWriterQos.hpp>
 #include <fastdds/dds/publisher/qos/PublisherQos.hpp>
 
-#include "PersonPubSubTypes.hpp"
+#include "AreaSearchStatusPubSubTypes.hpp"
 
 using namespace eprosima::fastdds::dds;
 
@@ -54,7 +54,7 @@ PersonPublisherApp::PersonPublisherApp(
     , publisher_(nullptr)
     , topic_(nullptr)
     , writer_(nullptr)
-    , type_(new test_msgs_pkg::msg::PersonPubSubType())
+    , type_(new test_msgs_pkg::msg::AreaSearchStatusPubSubType())
     , matched_(0)
     , samples_sent_(0)
     , stop_(false)
@@ -63,12 +63,12 @@ PersonPublisherApp::PersonPublisherApp(
 
     // Create the participant
     DomainParticipantQos pqos = PARTICIPANT_QOS_DEFAULT;
-    pqos.name("test_msgs_pkg::msg::Person_pub_participant");
+    pqos.name("test_msgs_pkg::msg::AreaSearchStatus_pub_participant");
     factory_ = DomainParticipantFactory::get_shared_instance();
     participant_ = factory_->create_participant(domain_id, pqos, nullptr, StatusMask::none());
     if (participant_ == nullptr)
     {
-        throw std::runtime_error("test_msgs_pkg::msg::Person Participant initialization failed");
+        throw std::runtime_error("test_msgs_pkg::msg::AreaSearchStatus Participant initialization failed");
     }
 
     // Register the type
@@ -80,16 +80,16 @@ PersonPublisherApp::PersonPublisherApp(
     publisher_ = participant_->create_publisher(pub_qos, nullptr, StatusMask::none());
     if (publisher_ == nullptr)
     {
-        throw std::runtime_error("test_msgs_pkg::msg::Person Publisher initialization failed");
+        throw std::runtime_error("test_msgs_pkg::msg::AreaSearchStatus Publisher initialization failed");
     }
 
     // Create the topic
     TopicQos topic_qos = TOPIC_QOS_DEFAULT;
     participant_->get_default_topic_qos(topic_qos);
-    topic_ = participant_->create_topic("rt/person_topic", "test_msgs_pkg::msg::dds_::Person_", topic_qos);
+    topic_ = participant_->create_topic("rt/AreaSearchStatus_topic", "test_msgs_pkg::msg::dds_::AreaSearchStatus_", topic_qos);
     if (topic_ == nullptr)
     {
-        throw std::runtime_error("test_msgs_pkg::msg::Person Topic initialization failed");
+        throw std::runtime_error("test_msgs_pkg::msg::AreaSearchStatus Topic initialization failed");
     }
 
     // Create the data writer
@@ -101,7 +101,7 @@ PersonPublisherApp::PersonPublisherApp(
     writer_ = publisher_->create_datawriter(topic_, writer_qos, this, StatusMask::all());
     if (writer_ == nullptr)
     {
-        throw std::runtime_error("test_msgs_pkg::msg::Person DataWriter initialization failed");
+        throw std::runtime_error("test_msgs_pkg::msg::AreaSearchStatus DataWriter initialization failed");
     }
 }
 
@@ -127,7 +127,7 @@ void PersonPublisherApp::on_publication_matched(
             std::lock_guard<std::mutex> lock(mutex_);
             matched_ = info.current_count;
         }
-        std::cout << "test_msgs_pkg::msg::Person Publisher matched." << std::endl;
+        std::cout << "test_msgs_pkg::msg::AreaSearchStatus Publisher matched." << std::endl;
         cv_.notify_one();
     }
     else if (info.current_count_change == -1)
@@ -136,7 +136,7 @@ void PersonPublisherApp::on_publication_matched(
             std::lock_guard<std::mutex> lock(mutex_);
             matched_ = info.current_count;
         }
-        std::cout << "test_msgs_pkg::msg::Person Publisher unmatched." << std::endl;
+        std::cout << "test_msgs_pkg::msg::AreaSearchStatus Publisher unmatched." << std::endl;
     }
     else
     {
@@ -170,7 +170,7 @@ void PersonPublisherApp::run()
 
     std::cout << "Connected to publisher. Waiting for messages...\n";
 
-    std::cout << "test_msgs_pkg::msg::Person DataWriter waiting for DataReaders." << std::endl;
+    std::cout << "test_msgs_pkg::msg::AreaSearchStatus DataWriter waiting for DataReaders." << std::endl;
 
     {
         std::unique_lock<std::mutex> lock(mutex_);
@@ -194,14 +194,14 @@ void PersonPublisherApp::run()
         void* data = nng_msg_body(buf);
         
 
-        example_Person_table_t exampleRead = example_Person_as_root(data);
-        test_msgs_pkg::msg::Person convertedFbPerson;
-        CreateFastDDSFromPerson(exampleRead, convertedFbPerson);
+        AreaSearchStatus_AreaSearchStatus_table_t exampleRead = AreaSearchStatus_AreaSearchStatus_as_root(data);
+        test_msgs_pkg::msg::AreaSearchStatus convertedFbPerson;
+        CreateFastDDSFromAreaSearchStatus(exampleRead, convertedFbPerson);
 
 
         std::cout << "Publishing to ROS:\n";
-        std::cout << "Name: " << convertedFbPerson.name() << "\n";
-        std::cout << "ID: " << convertedFbPerson.id() << "\n";
+        //std::cout << "Name: " << convertedFbPerson.name() << "\n";
+        std::cout << "ID: " << convertedFbPerson.vehicle_id() << "\n";
         writer_->write(&convertedFbPerson);
         std::cout << "Published to ROS\n";
     }

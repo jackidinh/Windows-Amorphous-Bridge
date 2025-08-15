@@ -18,10 +18,10 @@
     <ClCompile Include="ZmqPublisher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="person.pb.cc">
+    <ClCompile Include="example.pb.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="example.pb.cc">
+    <ClCompile Include="AreaSearchStatus.pb.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

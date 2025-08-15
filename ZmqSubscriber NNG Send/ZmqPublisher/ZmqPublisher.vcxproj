@@ -130,8 +130,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AreaSearchStatus.pb.cc" />
     <ClCompile Include="example.pb.cc" />
-    <ClCompile Include="person.pb.cc" />
     <ClCompile Include="ZmqPublisher.cpp" />
   </ItemGroup>
   <ItemGroup>

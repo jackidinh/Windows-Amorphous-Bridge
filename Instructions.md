@@ -3,12 +3,28 @@
 Packages needed:
 
 - ZeroMQ
+  
+  - Option 1: Installed using vcpkg
+  
+  - Option 2: Clone from https://github.com/zeromq/libzmq and build
 
 - Nanomsg Next Gen
+  
+  - Option 1: Install using vcpkg
+  
+  - Option 2: Clone from [GitHub - nanomsg/nng at stable](https://github.com/nanomsg/nng/tree/stable) and build
 
-- ProtoBuffers
+- ProtoBuffers(protoc and protoc-c)
+  
+  - Option 1: Install both using vcpkg
+  
+  - Option 2: https://github.com/protocolbuffers/protobuf/releases Install .zip from release 29.5 for protoc, look here for protobuf-c https://github.com/protobuf-c/protobuf-c
 
 - Fast DDS
+  
+  - Option 1: Install using vcpkg
+  
+  - Option 2: Install fastdds installer https://www.eprosima.com/product-download
 
 Files needed:
 
@@ -21,10 +37,6 @@ Files needed:
 - Equivalent .proto file
 
 - Auto generated .proto code
-
-TODO:
-
-- Integrate populated buffer converters
 
 ---
 
@@ -62,9 +74,9 @@ ZmqSubscriber NNG Send (ZMQ->NNG & NNG->ZMQ bridge):
   
   - Wait for ZMQ message
   
-  - TODO: implement proto to flatbuffer converter
+  - Use generated template code to convert protobuf to flatbuffer
   
-  - send flat buffer
+  - send flat buffer through nng publisher
 
 - Thread:
   
@@ -76,7 +88,7 @@ ZmqSubscriber NNG Send (ZMQ->NNG & NNG->ZMQ bridge):
   
   - Wait for NNG message
   
-  - TODO: implement flatbuffer to proto converter
+  - Use generated template code to convert flatbuffer to protobuf
   
   - Send message through ZMQ
 
@@ -87,17 +99,12 @@ testwork (NNG->DDS & DDS->NNG bridge):
 - Publish Program:
   
   - In order for ROS2 to see FastDDS topic and type, must use ROS2 compatible topic name and types ie. rt/person_topic and test_msgs_pkg::msg::dds_::Person_
-  - TODO: implement flat buffer to dds converter
 
 - Subscribe Program:
   
   - Must use different topic name so that data doesnt clash if receiving and sending at the same time.
-  
-  - TODO: implement dds to flatbuffer converter
-  
-  - 
 
-- Build using cmake .. and cmake --build .  in build folder, then run executable Person.exe in Debug directory
+- Build using cmake .. and cmake --build .  in build folder, then open sln file to add additional includes and directories and run.
 
 ros  (ROS2 system):
 
@@ -134,7 +141,11 @@ app2->app3
 
 
 
-NNG to FastDDS vs project include directives:
+NNG to FastDDS vs project include directives(for sln file after building):
+
+Some of these are automatically included from cmakelists file already, some need to be added since they were not put into the cmakelists file.
+
+
 Include directories:
 
 - C:\jackiWork\ZmqSubscriber NNG Send\ZmqPublisher\flatcc\flatcc\include
