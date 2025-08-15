@@ -16,32 +16,33 @@
 
 - Get source by using:
   
-  - `git clone https://github.com/protocolbuffers/protobuf.git
-    cd protobuf
-    git checkout v29.5 //optional but for now this is the version being use, installing latest version is totally fine aslong as you use mismatched versions
-    git submodule update --init --recursive`
-    `cd cmake
-    mkdir build
-    cd build`
+  - `git clone https://github.com/protocolbuffers/protobuf.git`
+  - `cd protobuf`
+  - `git checkout v29.5` //optional but for now this is the version being use, installing latest version is totally fine aslong as you use mismatched versions
+  - `git submodule update --init --recursive`
+  - `cd cmake`
+  - `mkdir build`
+  - `cd build`
 
 - Build using:
-  `cmake .. -DCMAKE_BUILD_TYPE=Release
-  make -j$(nproc)
-  sudo make install
-  sudo ldconfig`
+  `cmake .. -DCMAKE_BUILD_TYPE=Release`
+  `make -j$(nproc)`
+  `sudo make install`
+  `sudo ldconfig`
 
 - verify by running protoc --version
 
 #### Protobuf-c Linux Install From Sources:
 
-- `git clone https://github.com/protobuf-c/protobuf-c.git
-  cd protobuf-c
-  ./autogen.sh
-  ./configure 
-  make
-  sudo make install
-  sudo ldconfig `
+- `git clone https://github.com/protobuf-c/protobuf-c.git`
+- `cd protobuf-c`
+- `./autogen.sh`
+- `./configure `
+- `make`
+- `sudo make install`
+- `sudo ldconfig `
 
 - verify using `protoc-c --version`
   
+
 
