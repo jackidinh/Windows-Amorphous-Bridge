@@ -43,6 +43,5 @@
   sudo ldconfig `
 
 - verify using `protoc-c --version`
-
-- 
   
+
