@@ -1,0 +1,11 @@
+uint64 vehicle_id
+uint64 timestamp_epoch_usec
+uint64 estimated_completion_time_epoch_usec
+float32 estimated_percent_complete
+GeoRectangle heatmap_bounding_box
+uint16 heatmap_height
+uint16 heatmap_width
+uint8[] heatmap_data
+uint8 active_geometry_type
+GeoPolygon[] polygon
+GeoCircle[] circle

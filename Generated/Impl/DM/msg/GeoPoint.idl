@@ -1,0 +1,50 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from test_msgs_pkg/msg/GeoPoint.msg
+// generated code does not contain a copyright notice
+
+
+module test_msgs_pkg {
+  module msg {
+    @verbatim (language="comment", text=
+      "****************************************************************************" "\n"
+      "CUI" "\n"
+      "Controlled by: Defense Innovation Unit (DIU)" "\n"
+      "CUI Category(ies): CTI" "\n"
+      "Limited Dissemination Control: FEDCON" "\n"
+      "POC: Erik Williams, 650-933-2350" "\n"
+      "****************************************************************************" "\n"
+      "" "\n"
+      "This technical data is controlled under the International Traffic in Arms Regulations (ITAR) and may not be" "\n"
+      "exported to a foreign person, either in the U.S. or abroad, without proper authorization by the U.S." "\n"
+      "Department of State." "\n"
+      "" "\n"
+      "GOVERNMENT PURPOSE RIGHTS" "\n"
+      "IRAD Project: Collaborative Networked Autonomy" "\n"
+      "Contract Project: DIU Autonomous Collaborative Teaming (ACT)" "\n"
+      "Contract No.: HQ08452590009" "\n"
+      "Contractor Name: L3Harris Technologies" "\n"
+      "Contractor Address: 1395 Troutman Blvd NE, Palm Bay, FL 32905" "\n"
+      "Expiration Date: January 31, 2030" "\n"
+      "" "\n"
+      "The Government's rights to use, modify, reproduce, release, perform, display, or disclose this software are " "\n"
+      "restricted by paragraph (c)(2) of the Rights in Other Than Commercial Computer Software and Other Than " "\n"
+      "Commercial Computer Software Documentation clause contained in the above identified contract. No " "\n"
+      "restrictions apply after the expiration date shown above. Any reproduction of technical data or portions " "\n"
+      "thereof marked with this legend must also reproduce the markings." "\n"
+      "" "\n"
+      "THIS DOCUMENT DISCLOSES SUBJECT MATTER IN WHICH L3 TECHNOLOGIES INC., COMCEPT DIVISION, A SUBSIDIARY OF" "\n"
+      "L3HARRIS TECHNOLOGIES, INC. (L3HARRIS) HAS PROPRIETARY RIGHTS AND MAY NOT BE DISCLOSED WITHOUT L3HARRIS" "\n"
+      "OR US GOVERNMENT PRIOR WRITTEN PERMISSION.  NEITHER RECEIPT NOR POSSESSION THEREOF CONFERS OR TRANSFERS" "\n"
+      "ANY RIGHT TO USE, REPRODUCE, OR DISCLOSE THE DOCUMENT, ANY PART THEREOF, ANY INFORMATION CONTAINED" "\n"
+      "THEREIN, OR ANY PHYSICAL ARTICLE OR DEVICE, OR TO PRACTICE ANY METHOD OR PROCESS, EXCEPT BY PERMISSION" "\n"
+      "FROM L3HARRIS OR THE US GOVERNMENT, OR WRITTEN AGREEMENT WITH L3HARRIS.  COPYRIGHT 2024, 2025 L3HARRIS." "\n"
+      "ALL RIGHTS RESERVED.")
+    struct GeoPoint {
+      double latitude_deg;
+
+      double longitude_deg;
+
+      double altitude_msl_m;
+    };
+  };
+};

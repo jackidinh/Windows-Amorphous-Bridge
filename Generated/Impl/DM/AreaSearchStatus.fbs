@@ -1,0 +1,45 @@
+attribute "oneof";
+attribute "view";
+attribute "enum_selector";
+namespace AreaSearchStatus;
+
+enum GeometryKind_Enum:int {
+  POLYGON,
+  CIRCLE,
+  UNKNOWN
+}
+
+table GeoCircle {
+center: double;
+radius_m: double;
+}
+
+table GeoPolygon {
+bounding_points: double;
+}
+
+table GeoPoint {
+	latitude_deg: double;
+	longitude_deg: double;
+	altitude_msl_m: double;	
+}
+table GeoRectangle {
+	upper_left_point: GeoPoint;
+	bottom_right_point: GeoPoint;
+}
+
+table AreaSearchStatus (view) {
+	vehicle_id: uint64;
+	timestamp_epoch_usec: uint64;
+	estimated_completion_time_epoch_usec: uint64;
+	estimated_percent_complete: float;
+	heatmap_bounding_box: GeoRectangle;
+	heatmap_height: uint16;
+	heatmap_width: uint16;
+	heatmap_data: [uint8];
+	active_geometry_type: GeometryKind_Enum(enum_selector:"discriminator", oneof:"geo");
+	polygon:[GeoPolygon] (enum_selector:"POLYGON", oneof:"geo");
+	circle:[GeoCircle] (enum_selector:"CIRCLE", oneof:"geo");
+}
+
+root_type AreaSearchStatus;	 

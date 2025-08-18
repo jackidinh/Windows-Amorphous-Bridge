@@ -1,8 +1,0 @@
-namespace example;
-
-table Person {
-  name: string;
-  id: int32;
-}
-
-root_type Person;

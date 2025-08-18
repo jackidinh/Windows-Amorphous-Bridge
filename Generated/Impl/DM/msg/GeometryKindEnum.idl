@@ -1,0 +1,19 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from test_msgs_pkg/msg/GeometryKindEnum.msg
+// generated code does not contain a copyright notice
+
+
+module test_msgs_pkg {
+  module msg {
+    module GeometryKindEnum_Constants {
+      const uint8 POLYGON = 0;
+      const uint8 CIRCLE = 1;
+      const uint8 UNKNOWN = 2;
+    };
+    @verbatim (language="comment", text=
+      "GeometryKind_Enum enum constants")
+    struct GeometryKindEnum {
+      uint8 structure_needs_at_least_one_member;
+    };
+  };
+};

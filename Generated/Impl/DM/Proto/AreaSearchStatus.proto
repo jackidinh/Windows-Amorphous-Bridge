@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package AreaSearchStatus;
+
+enum GeometryKind_Enum {
+  POLYGON = 0;
+  CIRCLE = 1;
+  UNKNOWN = 2;
+}
+
+message AreaSearchStatus {
+  uint64 vehicle_id = 1;
+  uint64 timestamp_epoch_usec = 2;
+  uint64 estimated_completion_time_epoch_usec = 3;
+  float estimated_percent_complete = 4;
+  GeoRectangle heatmap_bounding_box = 5;
+  uint32 heatmap_height = 6;
+  uint32 heatmap_width = 7;
+  repeated uint32 heatmap_data = 8;
+  oneof geo {
+  GeometryKind_Enum active_geometry_type = 9;
+  GeoPolygon polygon = 10;
+  GeoCircle circle = 11;
+  }
+}
+
+message GeoCircle {
+  double center = 1;
+  double radius_m = 2;
+}
+
+message GeoPoint {
+  double latitude_deg = 1;
+  double longitude_deg = 2;
+  double altitude_msl_m = 3;
+}
+
+message GeoPolygon {
+  double bounding_points = 1;
+}
+
+message GeoRectangle {
+  GeoPoint upper_left_point = 1;
+  GeoPoint bottom_right_point = 2;
+}
+

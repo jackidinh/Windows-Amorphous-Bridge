@@ -1,0 +1,2 @@
+GeoPoint upper_left_point
+GeoPoint bottom_right_point

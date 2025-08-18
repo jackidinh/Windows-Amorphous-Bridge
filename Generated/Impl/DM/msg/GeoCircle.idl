@@ -1,0 +1,14 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from test_msgs_pkg/msg/GeoCircle.msg
+// generated code does not contain a copyright notice
+
+
+module test_msgs_pkg {
+  module msg {
+    struct GeoCircle {
+      double center;
+
+      double radius_m;
+    };
+  };
+};
