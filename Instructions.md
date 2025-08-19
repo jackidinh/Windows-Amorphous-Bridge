@@ -4,25 +4,25 @@ Packages needed:
 
 - ZeroMQ
   
-  - Option 1: Installed using vcpkg
+  - Option 1 (preferred): Installed using vcpkg
   
   - Option 2: Clone from https://github.com/zeromq/libzmq and build
 
 - Nanomsg Next Gen
   
-  - Option 1: Install using vcpkg
+  - Option 1(preferred): Install using vcpkg
   
   - Option 2: Clone from [GitHub - nanomsg/nng at stable](https://github.com/nanomsg/nng/tree/stable) and build
 
 - ProtoBuffers(protoc and protoc-c)
   
-  - Option 1: Install both using vcpkg
+  - Option 1(preferred): Install both using vcpkg
   
   - Option 2: https://github.com/protocolbuffers/protobuf/releases Install .zip from release 29.5 for protoc, look here for protobuf-c https://github.com/protobuf-c/protobuf-c
 
 - Fast DDS
   
-  - Option 1: Install using vcpkg
+  - Option 1(preferred): Install using vcpkg
   
   - Option 2: Install fastdds installer https://www.eprosima.com/product-download
 
@@ -60,7 +60,11 @@ ZmqPublisher (proto system):
   
   - Receive proto buffer through thread from previous app
 
-- Run using sln
+- Build using:
+  
+  -  `cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake`
+  
+  - `cmake --build build --config Release`
 
 ZmqSubscriber NNG Send (ZMQ->NNG & NNG->ZMQ bridge):
 
@@ -92,7 +96,11 @@ ZmqSubscriber NNG Send (ZMQ->NNG & NNG->ZMQ bridge):
   
   - Send message through ZMQ
 
-- Run using sln
+- Build using:
+  
+  - `cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake`
+  
+  - `cmake --build build --config Release`
 
 testwork (NNG->DDS & DDS->NNG bridge):
 
@@ -132,55 +140,4 @@ app3=>operation: App 4: ROS2 System
 st->app1
 app1->app2
 app2->app3
-
-
-
-
-
 ```
-
-
-
-NNG to FastDDS vs project include directives(for sln file after building):
-
-Some of these are automatically included from cmakelists file already, some need to be added since they were not put into the cmakelists file.
-
-
-Include directories:
-
-- C:\jackiWork\ZmqSubscriber NNG Send\ZmqPublisher\flatcc\flatcc\include
-
-- C:\jackiWork\testwork\src
-
-- C:\vcpkg\installed\x64-windows\include
-
-- C:\nng\include
-
-Linker General Libaries:
-
-- C:\jackiWork\ZmqSubscriber NNG Send\ZmqPublisher\flatcc\flatcc\lib\Release
-
-Linker input libraries:
-C:\Program Files\eProsima\fastdds 3.2.2\lib\x64Win64VS2019\libfastcdrd-2.3.lib
-C:\Program Files\eProsima\fastdds 3.2.2\lib\x64Win64VS2019\libfastddsd-3.2.lib
-Debug\Person_lib.lib
-C:\vcpkg\installed\x64-windows\lib\libprotobuf.lib
-C:\nng\build\Release\nng.lib
-C:\Program Files\eProsima\fastdds 3.2.2\lib\x64Win64VS2019\foonathan_memory-0.7.3-dbg.lib
-C:\Program Files\OpenSSL-Win64\lib\VC\x64\MDd\libssl_static.lib
-C:\Program Files\OpenSSL-Win64\lib\VC\x64\MDd\libcrypto_static.lib
-ws2_32.lib
-crypt32.lib
-iphlpapi.lib
-Shlwapi.lib
-kernel32.lib
-user32.lib
-gdi32.lib
-winspool.lib
-shell32.lib
-ole32.lib
-oleaut32.lib
-uuid.lib
-comdlg32.lib
-advapi32.lib
-flatcc.lib
