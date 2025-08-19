@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\jackiWork\ZmqSubscriber NNG Send\ZmqPublisher;C:\jackiWork\ZmqSubscriber NNG Send\ZmqPublisher\flatcc\flatcc\include;C:\vcpkg\installed\x64-windows\include\nng;C:\libzmq\include;C:\jackiWork\ZmqPublisher\ZmqPublisher;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\jackiWork\Generated\Impl\DM;C:\jackiWork\Generated\Impl\DM\Proto\ProtoGen;C:\jackiWork\ZmqSubscriber NNG Send\ZmqPublisher;C:\jackiWork\ZmqSubscriber NNG Send\ZmqPublisher\flatcc\flatcc\include;C:\vcpkg\installed\x64-windows\include\nng;C:\libzmq\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,8 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AreaSearchStatus.pb.cc" />
-    <ClCompile Include="example.pb.cc" />
+    <ClCompile Include="..\..\Generated\Impl\DM\Proto\ProtoGen\AreaSearchStatus.pb.cc" />
     <ClCompile Include="ZmqPublisher.cpp" />
   </ItemGroup>
   <ItemGroup>

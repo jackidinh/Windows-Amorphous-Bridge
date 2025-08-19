@@ -18,10 +18,7 @@
     <ClCompile Include="ZmqPublisher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="example.pb.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AreaSearchStatus.pb.cc">
+    <ClCompile Include="..\..\Generated\Impl\DM\Proto\ProtoGen\AreaSearchStatus.pb.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

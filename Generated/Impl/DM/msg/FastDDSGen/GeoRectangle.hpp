@@ -24,7 +24,7 @@
 
 #include <cstdint>
 #include <utility>
-#include "C:\jackiWork\ASS NNG DDS\src\GeoPoint.hpp"
+#include "GeoPoint.hpp"
 //C:\jackiWork\ASS NNG DDS\src\GeoRectangle.hpp
 
 #if defined(_WIN32)

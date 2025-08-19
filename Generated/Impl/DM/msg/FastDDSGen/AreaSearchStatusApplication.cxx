@@ -24,10 +24,10 @@
 #include "AreaSearchStatusPublisherApp.hpp"
 #include "AreaSearchStatusSubscriberApp.hpp"
 
-//! Factory method to create a publisher or subscriber
+ //! Factory method to create a publisher or subscriber
 std::shared_ptr<AreaSearchStatusApplication> AreaSearchStatusApplication::make_app(
-        const int& domain_id,
-        const std::string& entity_kind)
+    const int& domain_id,
+    const std::string& entity_kind)
 {
     std::shared_ptr<AreaSearchStatusApplication> entity;
     if (strcmp(entity_kind.c_str(), "publisher") == 0)

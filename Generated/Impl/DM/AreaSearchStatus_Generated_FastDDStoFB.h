@@ -4,7 +4,7 @@
 
 #include "AreaSearchStatus_reader.h"
 #include "AreaSearchStatus_builder.h"
-#include "C:\jackiWork\ASS NNG DDS\src\AreaSearchStatus.hpp"
+#include "AreaSearchStatus.hpp"
 
 #ifndef AreaSearchStatus_FastDDS_TYPES_DEFINED
 //Leaving out for now

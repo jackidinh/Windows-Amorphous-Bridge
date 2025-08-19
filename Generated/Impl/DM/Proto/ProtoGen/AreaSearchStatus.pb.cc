@@ -4,7 +4,6 @@
 // Protobuf C++ Version: 5.29.3
 
 #include "AreaSearchStatus.pb.h"
-
 #include <algorithm>
 #include <type_traits>
 #include "google/protobuf/io/coded_stream.h"

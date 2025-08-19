@@ -26,9 +26,9 @@
 #include <utility>
 #include <vector>
 
-#include "C:\jackiWork\ASS NNG DDS\src\GeoRectangle.hpp"
-#include "C:\jackiWork\ASS NNG DDS\src\GeoCircle.hpp"
-#include "C:\jackiWork\ASS NNG DDS\src\GeoPolygon.hpp"
+#include "GeoRectangle.hpp"
+#include "GeoCircle.hpp"
+#include "GeoPolygon.hpp"
 
 #if defined(_WIN32)
 #if defined(EPROSIMA_USER_DLL_EXPORT)
